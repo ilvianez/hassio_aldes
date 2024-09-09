@@ -65,7 +65,13 @@ class AldesApi:
         
         async with await self._request_with_auth_interceptor(self._session.get, f'{self._BASE_URL}/aldesoc/v5/users/me/products/{product_id}') as response:
             json = await response.json()
-            return {'mode': self._extract_product_mode(json)} if response.status == 200 else {}
+            if response.status == 200:
+                return {
+                    'mode': self._extract_product_mode(json),
+                    'AIR_OUTSIDE_TPT': json['indicator'].get('AIR_OUTSIDE_TPT')  # Estrae la temperatura esterna
+                }
+            else:
+                return {}
     
     async def request_set_mode(self, product_id: str, mode: str) -> None:
         if not self._token:
