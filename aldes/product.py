@@ -31,6 +31,7 @@ class AldesProduct:
         self._id       = id
         self._name     = name
         self._mode     = mode
+        self.air_outside_tpt = None  # Aggiunta del dato AIR_OUTSIDE_TPT
     
     @property
     def id(self):
@@ -60,3 +61,5 @@ class AldesProduct:
         data = await self._aldesApi.get_product(self._id)
         if (mode := data.get('mode')) is not None:
             self._mode = mode
+        if (air_outside_tpt := data.get('AIR_OUTSIDE_TPT')) is not None:
+            self.air_outside_tpt = air_outside_tpt  # Aggiornamento del dato AIR_OUTSIDE_TPT
